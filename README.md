@@ -54,10 +54,9 @@ Ambari WebGUI: http://10.211.55.101:8080
 Postgre DB:
   username/password:
 
-# Web UI
-You can check the following URLs to monitor the Hadoop daemons.
+# Install Hadoop with Ambari
 
-1. [Ambari WebGUI] http://10.211.55.101:8080
+Replace /usr/lib/python2.6/site-packages/resource_management/core/providers/package/apt.py by /vagrant/resources/apt.py to add option of apt get of "-o Dpkg::Options::=--force-overwrite"
 
 # Vagrant boxes
 A list of available Vagrant boxes is shown at http://www.vagrantbox.es. 
