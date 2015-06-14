@@ -18,7 +18,6 @@ function installUtilities {
 	apt-get update -y
 	apt-get install -y curl zip r-base r-base-dev
 	curl -sSL https://get.docker.com/ubuntu/ | sh
-
 }
 echo "setup ubuntu"
 
