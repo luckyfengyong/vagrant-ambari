@@ -14,7 +14,7 @@
 
         "site.global.metric_collector_host": "${NN_HOST}",
         "site.global.metric_collector_port": "6188",
-        "site.global.metric_collector_lib": "",
+        "site.global.metric_collector_lib": "file:///usr/lib/ambari-metrics-hadoop-sink/ambari-metrics-hadoop-sink.jar",
 
         "site.global.hbase_instance_name": "instancename",
         "site.global.hbase_root_password": "secret",

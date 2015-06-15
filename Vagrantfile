@@ -9,8 +9,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			node.vm.box = "ubuntu"
 			node.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vbox.box"
 			node.vm.provider "virtualbox" do |v|
-			    v.name = "ambarinode#{i}"
-			    v.customize ["modifyvm", :id, "--memory", "2048"]
+				v.name = "ambarinode#{i}"
+				if i == 1
+					v.customize ["modifyvm", :id, "--memory", "4096"]
+				else
+					v.customize ["modifyvm", :id, "--memory", "2048"]
+				end
 			end
 			if i < 10
 				node.vm.network :private_network, ip: "10.211.75.10#{i}"
