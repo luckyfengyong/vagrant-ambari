@@ -12,6 +12,7 @@ function installAmbari {
 	ambari-server setup -s
 	cp -f /vagrant/resources/os_check_type.py /usr/lib/python2.6/site-packages/ambari_server/
 	sed -e "s/14.04/12.04/g" -i /etc/*-release
+	cp -f /vagrant/resources/apt.py /usr/lib/python2.6/site-packages/resource_management/core/providers/package/
 	ambari-server start
 }
 

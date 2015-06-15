@@ -3,3 +3,5 @@ resources/scala-2.11.6.tgz
 resources/apache-ant-1.9.5-bin.zip
 resources/apache-maven-3.2.5-bin.zip
 resources/jdk-7u76-linux-x64.tar.gz
+resources/src
+resources/slider-hbase-app-package-1.0.1.1-bin.zip

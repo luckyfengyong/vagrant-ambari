@@ -48,21 +48,67 @@ You can make the VM setup even faster if you pre-download the Hadoop ... and Ora
 
 The setup script will automatically detect if these files (with precisely the same names) exist and use them instead. If you are using slightly different versions, you will have to modify the script accordingly.
 
+# Post Installation
+## Build Slider HBase Package
+
+```
+cd /vagrant/resources
+wget http://archive.apache.org/dist/hbase/stable/hbase-1.0.1.1-bin.tar.gz
+cd src
+git clone git://git.apache.org/incubator-slider.git
+cd incubator-slider/
+git checkout -b slider-0.80.0-incubating --track origin/releases/slider-0.80.0-incubating
+cd /vagrant/resources/src/incubator-slider/app-packages/hbase
+mvn clean package -Phbase-app-package -Dpkg.version=1.0.1.1-bin -Dhbase.version=1.0.1.1 -Dpkg.name=hbase-1.0.1.1-bin.tar.gz -Dpkg.src=/vagrant/resources/
+```
+
+## Create Slider View
+
 # Access Point
-Ambari WebGUI: http://10.211.55.101:8080
+Ambari WebGUI: http://10.211.75.101:8080
   username/password: admin/admin/ad
 Postgre DB:
   username/password:
 
 # Install Hadoop with Ambari
 
-Replace /usr/lib/python2.6/site-packages/resource_management/core/providers/package/apt.py by /vagrant/resources/apt.py to add option of apt get of "-o Dpkg::Options::=--force-overwrite"
+Replace /usr/lib/python2.6/site-packages/resource_management/core/providers/package/apt.py by /vagrant/resources/apt.py to add option of apt-get of "-o Dpkg::Options::=--force-overwrite"
+
+# Manage Ambari
+
+Run following command to start/restart Ambari server
+
+```
+ambari-server start|restart
+```
+
+Run following command to start/restart Ambari agent
+
+```
+ambari-agent start|restart hostname
+```
+
+Please refer to https://cwiki.apache.org/confluence/display/AMBARI/Ambari+User+Guides for Ambari user doc.
 
 # Vagrant boxes
 A list of available Vagrant boxes is shown at http://www.vagrantbox.es. 
 
 # Vagrant box location
 The Vagrant box is downloaded to the ~/.vagrant.d/boxes directory. On Windows, this is C:/Users/{your-username}/.vagrant.d/boxes.
+
+# Trouble-shooting YARN
+
+In YARN terminology, executors and application masters run inside "containers". YARN has two modes for handling container logs after an application has completed. If log aggregation is turned on (with the yarn.log-aggregation-enable config), container logs are copied to HDFS and deleted on the local machine. These logs can be viewed from anywhere on the cluster with the ```yarn logs``` command.
+
+```
+yarn logs -applicationId <app ID>
+```
+
+will print out the contents of all log files from all containers from the given application.
+
+When log aggregation isn’t turned on, logs are retained locally on each machine under YARN_APP_LOGS_DIR, which is usually configured to /tmp/logs or $HADOOP_HOME/logs/userlogs depending on the Hadoop version and installation. Viewing logs for a container requires going to the host that contains them and looking in this directory. Subdirectories organize log files by application ID and container ID.
+
+To review per-container launch environment, increase yarn.nodemanager.delete.debug-delay-sec to a large value (e.g. 36000), and then access the application cache through yarn.nodemanager.local-dirs (by default /tmp/hadoop-root/nm-local-dir/usercache/root/appcache) on the nodes on which containers are launched. This directory contains the launch script, JARs, and all environment variables used for launching each container. This process is useful for debugging classpath problems in particular. (Note that enabling this requires admin privileges on cluster settings and a restart of all node managers. Thus, this is not applicable to hosted clusters).
 
 # Copyright Stuff
 Copyright 2015
